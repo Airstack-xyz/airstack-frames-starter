@@ -1,8 +1,13 @@
 import { Button, Frog } from "@airstack/frog";
 import { devtools } from "@airstack/frog/dev";
 import { serveStatic } from "@hono/node-server/serve-static";
+import { handle } from "@airstack/frog/vercel";
 
-export const app = new Frog();
+export const app = new Frog({
+  apiKey: process.env.AIRSTACK_API_KEY as string,
+  assetsPath: "/",
+  basePath: "/api",
+});
 
 app.frame("/", async (c) => {
   const { status } = c;
@@ -23,3 +28,5 @@ app.frame("/", async (c) => {
 });
 
 devtools(app, { serveStatic });
+export const GET = handle(app);
+export const POST = handle(app);
